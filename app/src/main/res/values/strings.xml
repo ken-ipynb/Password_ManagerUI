@@ -1,0 +1,36 @@
+<resources>
+
+    <string name="app_name">Wault.io</string>
+    <string name="home_app_icon_description">Wault.io icon</string>
+
+    <string name="vault_secured">●  Vault secured</string>
+    <string name="settings_description">Settings</string>
+    <string name="search_hint">⌕  Search your vault…</string>
+    <string name="your_vault">YOUR VAULT</string>
+    <string name="saved_passwords">saved passwords</string>
+    <string name="your_passwords_title">Your passwords</string>
+    <string name="add_password_description">Add password</string>
+
+    <string name="settings_icon">⚙</string>
+    <string name="zero">0</string>
+
+    <string name="add_password_title">Add Password</string>
+    <string name="website_hint">Website</string>
+    <string name="username_email_hint">Username / Email</string>
+    <string name="password_hint">Password</string>
+    <string name="generate_button">Generate</string>
+    <string name="category_hint">Category</string>
+
+    <string name="scan_qr_button">Scan QR Code</string>
+    <string name="upload_qr_button">Upload QR Code</string>
+
+    <string name="save_password_button">Save Password</string>
+    <string name="generate_password_button">Generate Password</string>
+
+    <string name="password_details_title">Password Details</string>
+    <string name="show_password_button">Show</string>
+    <string name="edit_password_button">Edit Password</string>
+    <string name="delete_password_button">Delete Password</string>
+    <string name="generate_qr_button">Generate QR Code</string>
+
+</resources>
