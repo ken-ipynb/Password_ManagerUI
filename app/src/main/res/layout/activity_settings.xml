@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -12,10 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="40dp">
-
-        <!-- ================================================= -->
-        <!-- HEADER -->
-        <!-- ================================================= -->
 
         <ImageButton
             android:id="@+id/backButton"
@@ -43,10 +38,6 @@
             app:layout_constraintStart_toEndOf="@id/backButton"
             app:layout_constraintTop_toTopOf="@id/backButton" />
 
-        <!-- ================================================= -->
-        <!-- PROFILE CARD -->
-        <!-- ================================================= -->
-
         <androidx.cardview.widget.CardView
             android:id="@+id/profileCard"
             android:layout_width="0dp"
@@ -66,8 +57,6 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp">
 
-                <!-- Profile Image -->
-
                 <ImageView
                     android:id="@+id/profileImage"
                     android:layout_width="82dp"
@@ -77,8 +66,6 @@
                     android:src="@drawable/wault_icon_android_512"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <!-- Profile Name -->
 
                 <TextView
                     android:id="@+id/profileName"
@@ -96,8 +83,6 @@
                     app:layout_constraintStart_toEndOf="@id/profileImage"
                     app:layout_constraintTop_toTopOf="@id/profileImage" />
 
-                <!-- Profile Email -->
-
                 <TextView
                     android:id="@+id/profileEmail"
                     android:layout_width="0dp"
@@ -114,8 +99,6 @@
                     app:layout_constraintStart_toEndOf="@id/profileImage"
                     app:layout_constraintTop_toBottomOf="@id/profileName" />
 
-                <!-- Change Photo -->
-
                 <TextView
                     android:id="@+id/changeProfileText"
                     android:layout_width="wrap_content"
@@ -129,8 +112,6 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profileImage" />
-
-                <!-- Edit Profile Hint -->
 
                 <TextView
                     android:id="@+id/editProfileHint"
@@ -150,10 +131,6 @@
 
         </androidx.cardview.widget.CardView>
 
-        <!-- ================================================= -->
-        <!-- PROFILE INFORMATION -->
-        <!-- ================================================= -->
-
         <TextView
             android:id="@+id/profileSectionTitle"
             android:layout_width="wrap_content"
@@ -166,8 +143,6 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profileCard" />
-
-        <!-- Display Name Label -->
 
         <TextView
             android:id="@+id/nameLabel"
@@ -183,8 +158,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profileSectionTitle" />
-
-        <!-- Display Name Value -->
 
         <TextView
             android:id="@+id/profileInfoName"
@@ -203,8 +176,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nameLabel" />
 
-        <!-- Email Label -->
-
         <TextView
             android:id="@+id/emailLabel"
             android:layout_width="0dp"
@@ -219,8 +190,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profileInfoName" />
-
-        <!-- Email Value -->
 
         <TextView
             android:id="@+id/profileInfoEmail"
@@ -237,10 +206,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/emailLabel" />
-
-        <!-- ================================================= -->
-        <!-- APP INFORMATION -->
-        <!-- ================================================= -->
 
         <TextView
             android:id="@+id/aboutSectionTitle"

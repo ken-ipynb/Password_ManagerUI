@@ -29,325 +29,108 @@ import java.util.concurrent.Executors;
 public class QRScannerActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_CODE = 100;
-
     private PreviewView previewView;
     private TextView closeButton;
-
     private ExecutorService cameraExecutor;
     private BarcodeScanner scanner;
-
     private boolean qrDetected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_qrscanner);
-
-        // =====================================================
-        // FIND VIEWS
-        // =====================================================
 
         previewView = findViewById(R.id.previewView);
         closeButton = findViewById(R.id.closeButton);
-
-        // =====================================================
-        // CAMERA + SCANNER
-        // =====================================================
-
         cameraExecutor = Executors.newSingleThreadExecutor();
-
         scanner = BarcodeScanning.getClient();
-
-        // =====================================================
-        // CLOSE BUTTON
-        // =====================================================
 
         if (closeButton != null) {
             closeButton.setOnClickListener(v -> finish());
         }
 
-        // =====================================================
-        // CAMERA PERMISSION
-        // =====================================================
-
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED) {
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startCamera();
-
         } else {
-
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.CAMERA},
-                    CAMERA_PERMISSION_CODE
-            );
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         }
     }
 
-    // =========================================================
-    // START CAMERA
-    // =========================================================
-
     private void startCamera() {
-
-        ListenableFuture<ProcessCameraProvider> cameraProviderFuture =
-                ProcessCameraProvider.getInstance(this);
-
+        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(() -> {
-
             try {
-
-                ProcessCameraProvider cameraProvider =
-                        cameraProviderFuture.get();
-
-                // =================================================
-                // PREVIEW
-                // =================================================
-
-                Preview preview =
-                        new Preview.Builder()
-                                .build();
-
-                preview.setSurfaceProvider(
-                        previewView.getSurfaceProvider()
-                );
-
-                // =================================================
-                // BACK CAMERA
-                // =================================================
-
-                CameraSelector cameraSelector =
-                        new CameraSelector.Builder()
-                                .requireLensFacing(
-                                        CameraSelector.LENS_FACING_BACK
-                                )
-                                .build();
-
-                // =================================================
-                // IMAGE ANALYSIS
-                // =================================================
-
-                ImageAnalysis imageAnalysis =
-                        new ImageAnalysis.Builder()
-                                .setBackpressureStrategy(
-                                        ImageAnalysis
-                                                .STRATEGY_KEEP_ONLY_LATEST
-                                )
-                                .build();
-
-                imageAnalysis.setAnalyzer(
-                        cameraExecutor,
-                        imageProxy -> {
-
-                            // Already detected
-                            if (qrDetected) {
-                                imageProxy.close();
-                                return;
-                            }
-
-                            android.media.Image mediaImage =
-                                    imageProxy.getImage();
-
-                            if (mediaImage == null) {
-                                imageProxy.close();
-                                return;
-                            }
-
-                            // =================================================
-                            // CREATE INPUT IMAGE
-                            // =================================================
-
-                            InputImage inputImage =
-                                    InputImage.fromMediaImage(
-                                            mediaImage,
-                                            imageProxy
-                                                    .getImageInfo()
-                                                    .getRotationDegrees()
-                                    );
-
-                            // =================================================
-                            // SCAN QR / BARCODE
-                            // =================================================
-
-                            scanner.process(inputImage)
-
-                                    .addOnSuccessListener(
-                                            barcodes -> {
-
-                                                if (barcodes.isEmpty()
-                                                        || qrDetected) {
-                                                    return;
-                                                }
-
-                                                String value =
-                                                        barcodes
-                                                                .get(0)
-                                                                .getRawValue();
-
-                                                if (value != null
-                                                        && !value
-                                                        .trim()
-                                                        .isEmpty()) {
-
-                                                    qrDetected = true;
-
-                                                    runOnUiThread(
-                                                            () ->
-                                                                    showResult(
-                                                                            value
-                                                                    )
-                                                    );
-                                                }
-                                            }
-                                    )
-
-                                    .addOnFailureListener(
-                                            e -> {
-                                                // Ignore individual
-                                                // scanning failures.
-                                            }
-                                    )
-
-                                    .addOnCompleteListener(
-                                            task ->
-                                                    imageProxy.close()
-                                    );
-                        }
-                );
-
-                // =================================================
-                // BIND CAMERA
-                // =================================================
+                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                Preview preview = new Preview.Builder().build();
+                preview.setSurfaceProvider(previewView.getSurfaceProvider());
+                CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
+                ImageAnalysis imageAnalysis = new ImageAnalysis.Builder().setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();
+                imageAnalysis.setAnalyzer(cameraExecutor, imageProxy -> {
+                    if (qrDetected) {
+                        imageProxy.close();
+                        return;
+                    }
+                    android.media.Image mediaImage = imageProxy.getImage();
+                    if (mediaImage == null) {
+                        imageProxy.close();
+                        return;
+                    }
+                    InputImage inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
+                    scanner.process(inputImage)
+                            .addOnSuccessListener(barcodes -> {
+                                if (barcodes.isEmpty() || qrDetected) return;
+                                String value = barcodes.get(0).getRawValue();
+                                if (value != null && !value.trim().isEmpty()) {
+                                    qrDetected = true;
+                                    runOnUiThread(() -> showResult(value));
+                                }
+                            })
+                            .addOnFailureListener(e -> {})
+                            .addOnCompleteListener(task -> imageProxy.close());
+                });
 
                 cameraProvider.unbindAll();
-
-                cameraProvider.bindToLifecycle(
-                        this,
-                        cameraSelector,
-                        preview,
-                        imageAnalysis
-                );
-
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
             } catch (Exception e) {
-
-                runOnUiThread(() ->
-                        Toast.makeText(
-                                QRScannerActivity.this,
-                                "Camera failed: " + e.getMessage(),
-                                Toast.LENGTH_LONG
-                        ).show()
-                );
+                runOnUiThread(() -> Toast.makeText(QRScannerActivity.this, "Camera failed: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
-
         }, ContextCompat.getMainExecutor(this));
     }
 
-    // =========================================================
-    // QR RESULT
-    // =========================================================
-
     private void showResult(String value) {
-
         new AlertDialog.Builder(this)
-
                 .setTitle("QR Code Detected")
-
                 .setMessage(value)
-
-                .setPositiveButton(
-                        "Use QR",
-                        (dialog, which) -> {
-
-                            Intent resultIntent =
-                                    new Intent();
-
-                            resultIntent.putExtra(
-                                    "qr_result",
-                                    value
-                            );
-
-                            setResult(
-                                    RESULT_OK,
-                                    resultIntent
-                            );
-
-                            finish();
-                        }
-                )
-
-                .setNegativeButton(
-                        "Scan Again",
-                        (dialog, which) -> {
-
-                            qrDetected = false;
-                        }
-                )
-
-                .setOnCancelListener(
-                        dialog ->
-                                qrDetected = false
-                )
-
+                .setPositiveButton("Use QR", (dialog, which) -> {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("qr_result", value);
+                    setResult(RESULT_OK, resultIntent);
+                    finish();
+                })
+                .setNegativeButton("Scan Again", (dialog, which) -> {
+                    qrDetected = false;
+                })
+                .setOnCancelListener(dialog -> qrDetected = false)
                 .show();
     }
 
-    // =========================================================
-    // CAMERA PERMISSION RESULT
-    // =========================================================
-
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode,
-            @NonNull String[] permissions,
-            @NonNull int[] grantResults
-    ) {
-
-        super.onRequestPermissionsResult(
-                requestCode,
-                permissions,
-                grantResults
-        );
-
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_PERMISSION_CODE) {
-
-            if (grantResults.length > 0
-                    && grantResults[0]
-                    == PackageManager.PERMISSION_GRANTED) {
-
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera();
-
             } else {
-
-                Toast.makeText(
-                        this,
-                        "Camera permission is required",
-                        Toast.LENGTH_LONG
-                ).show();
-
+                Toast.makeText(this, "Camera permission is required", Toast.LENGTH_LONG).show();
                 finish();
             }
         }
     }
 
-    // =========================================================
-    // DESTROY
-    // =========================================================
-
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
-
-        if (cameraExecutor != null) {
-            cameraExecutor.shutdown();
-        }
-
-        if (scanner != null) {
-            scanner.close();
-        }
+        if (cameraExecutor != null) cameraExecutor.shutdown();
+        if (scanner != null) scanner.close();
     }
 }

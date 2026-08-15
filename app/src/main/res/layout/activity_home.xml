@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,18 +9,10 @@
     android:background="#0B0F14"
     tools:context=".HomeActivity">
 
-    <!-- ===================================================== -->
-    <!-- MAIN HOME -->
-    <!-- ===================================================== -->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#0B0F14">
-
-        <!-- ================================================= -->
-        <!-- TOP BAR (now styled as its own header block) -->
-        <!-- ================================================= -->
 
         <LinearLayout
             android:id="@+id/topBar"
@@ -36,8 +27,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- MENU -->
-
             <ImageButton
                 android:id="@+id/menuButton"
                 android:layout_width="46dp"
@@ -48,8 +37,6 @@
                 android:src="@android:drawable/ic_menu_sort_by_size"
                 android:tint="#FFFFFF" />
 
-            <!-- APP ICON -->
-
             <ImageView
                 android:id="@+id/homeAppIcon"
                 android:layout_width="38dp"
@@ -58,8 +45,6 @@
                 android:contentDescription="@string/home_app_icon_description"
                 android:scaleType="centerCrop"
                 android:src="@drawable/wault_icon_android_512" />
-
-            <!-- TITLE -->
 
             <LinearLayout
                 android:id="@+id/titleContainer"
@@ -89,8 +74,6 @@
 
             </LinearLayout>
 
-            <!-- SEARCH INPUT -->
-
             <EditText
                 android:id="@+id/topSearchInput"
                 android:layout_width="0dp"
@@ -106,8 +89,6 @@
                 android:textColorHint="#657080"
                 android:visibility="gone" />
 
-            <!-- SEARCH BUTTON -->
-
             <ImageButton
                 android:id="@+id/searchButton"
                 android:layout_width="46dp"
@@ -118,8 +99,6 @@
                 android:padding="12dp"
                 android:src="@android:drawable/ic_menu_search"
                 android:tint="#FFFFFF" />
-
-            <!-- CLOSE SEARCH -->
 
             <ImageButton
                 android:id="@+id/closeSearchButton"
@@ -133,8 +112,6 @@
                 android:tint="#FFFFFF"
                 android:visibility="gone" />
 
-            <!-- OLD SETTINGS BUTTON - KEPT FOR JAVA COMPATIBILITY -->
-
             <TextView
                 android:id="@+id/settingsButton"
                 android:layout_width="1dp"
@@ -142,10 +119,6 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-
-        <!-- ================================================= -->
-        <!-- HOME CONTENT -->
-        <!-- ================================================= -->
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/homeScrollView"
@@ -167,10 +140,6 @@
                 android:paddingEnd="20dp"
                 android:paddingBottom="110dp">
 
-                <!-- ================================================= -->
-                <!-- WELCOME -->
-                <!-- ================================================= -->
-
                 <TextView
                     android:id="@+id/welcomeText"
                     android:layout_width="wrap_content"
@@ -189,10 +158,6 @@
                     android:text="Your digital vault is ready."
                     android:textColor="#7E8999"
                     android:textSize="14sp" />
-
-                <!-- ================================================= -->
-                <!-- VAULT SUMMARY -->
-                <!-- ================================================= -->
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/vaultSummary"
@@ -267,10 +232,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <!-- ================================================= -->
-                <!-- CATEGORIES HEADER -->
-                <!-- ================================================= -->
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -287,8 +248,6 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <!-- CLEAR BUTTON -->
-
                     <TextView
                         android:id="@+id/categoryViewText"
                         android:layout_width="wrap_content"
@@ -304,10 +263,6 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
-
-                <!-- ================================================= -->
-                <!-- CATEGORY CHIPS -->
-                <!-- ================================================= -->
 
                 <HorizontalScrollView
                     android:id="@+id/categoryScrollView"
@@ -326,10 +281,6 @@
                         android:orientation="horizontal" />
 
                 </HorizontalScrollView>
-
-                <!-- ================================================= -->
-                <!-- PASSWORD LIST HEADER -->
-                <!-- ================================================= -->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -358,10 +309,6 @@
 
                 </LinearLayout>
 
-                <!-- ================================================= -->
-                <!-- PASSWORD LIST -->
-                <!-- ================================================= -->
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/passwordRecyclerView"
                     android:layout_width="match_parent"
@@ -374,10 +321,6 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-        <!-- ================================================= -->
-        <!-- ADD PASSWORD -->
-        <!-- ================================================= -->
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addPasswordButton"
@@ -393,10 +336,6 @@
             app:tint="#FFFFFF" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- ===================================================== -->
-    <!-- NAVIGATION DRAWER -->
-    <!-- ===================================================== -->
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
